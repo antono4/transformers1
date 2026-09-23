@@ -1,0 +1,23 @@
+[
+    {
+        "id": "one",
+        "title": "High-Perf Web App",
+        "desc": "This high-performance web application uses a microservices architecture to handle 10k+ requests per second. Built with React, Node.js, and Redis for caching.",
+        "tags": ["React", "Node.js", "Redis"],
+        "link": "https://github.com/antono4/project-one"
+    },
+    {
+        "id": "two",
+        "title": "E-Commerce Platform",
+        "desc": "A full-scale e-commerce solution featuring a customized checkout flow, Stripe integration, and an administrative dashboard for inventory management.",
+        "tags": ["Next.js", "Stripe", "MongoDB"],
+        "link": "https://github.com/antono4/project-two"
+    },
+    {
+        "id": "three",
+        "title": "Data Viz Dashboard",
+        "desc": "Real-time data visualization tool that connects to public APIs to render complex data sets into intuitive charts and graphs using D3.js.",
+        "tags": ["D3.js", "TypeScript", "OpenWeather API"],
+        "link": "https://github.com/antono4/project-three"
+    }
+]
