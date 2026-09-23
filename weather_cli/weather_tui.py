@@ -1,10 +1,11 @@
 from textual.app import App, ComposeResult
-from textual.widgets import Header, Footer, Static, Input, Label, DataTable
+from textual.widgets import Header, Footer, Static, Input, Label, DataTable, Button
 from textual.containers import Container, Horizontal, Vertical
 from textual.binding import Binding
 import requests
 import csv
 from datetime import datetime
+from favorites_manager import load_favorites, save_favorite, remove_favorite, get_all_favorites
 
 class WeatherTUI(App):
     CSS = """
@@ -13,14 +14,14 @@ class WeatherTUI(App):
         background: #1e293b;
     }
     #main-container {
-        width: 80%;
-        height: 80%;
+        width: 95%;
+        height: 95%;
         border: round #60a5fa;
         padding: 1;
     }
     #sidebar {
-        width: 30;
-        border-right: vline #60a5fa;
+        width: 35;
+        border-right: solid #60a5fa;
         padding: 1;
     }
     #content {
@@ -40,10 +41,13 @@ class WeatherTUI(App):
     .stat-value {
         color: #f8fafc;
         text-style: bold;
-        font-size: 120%;
     }
     #search-bar {
         margin-bottom: 1;
+    }
+    .fav-btn {
+        margin-top: 1;
+        width: 100%;
     }
     """
 
@@ -57,22 +61,25 @@ class WeatherTUI(App):
         with Container(id="main-container"):
             with Horizontal():
                 with Vertical(id="sidebar"):
-                    yield Label("[bold cyan]Recent Searches[/bold cyan]")
+                    yield Label("[bold cyan]⭐ Favorites[/bold cyan]")
+                    yield DataTable(id="fav-table")
+                    yield Label("[bold cyan]🕒 Recent[/bold cyan]")
                     yield DataTable(id="history-table")
                 with Vertical(id="content"):
                     yield Input(placeholder="Enter city name and press Enter...", id="search-bar")
-                    yield Static("Search for a city to see the weather!", id="weather-display")
+                    yield Static("Search for a city to see the advanced weather data!", id="weather-display")
+                    yield Button("⭐ Add to Favorites", id="add-fav", classes="fav-btn")
                     yield DataTable(id="forecast-table")
         yield Footer()
 
     def on_mount(self) -> None:
         self.update_history_table()
+        self.update_favorites_table()
 
     async def on_input_submitted(self, event: Input.Submitted) -> None:
         city = event.value
-        self.query_one("#weather-display").update(f"Searching for {city}...")
+        self.query_one("#weather-display").update(f"Fetching advanced data for {city}...")
         
-        # Geocoding
         geo_url = f"https://geocoding-api.open-meteo.com/v1/search?name={city}&count=1&language=en&format=json"
         try:
             geo_res = requests.get(geo_url).json()
@@ -81,34 +88,56 @@ class WeatherTUI(App):
                 return
             
             res = geo_res["results"][0]
-            lat, lon, full_name = res["latitude"], res["longitude"], res["name"]
+            self.current_city_data = {
+                "lat": res["latitude"], 
+                "lon": res["longitude"], 
+                "name": res["name"]
+            }
 
-            # Current Weather
-            weather_url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current_weather=true"
-            w_res = requests.get(weather_url).json()["current_weather"]
+            weather_url = f"https://api.open-meteo.com/v1/forecast?latitude={res['latitude']}&longitude={res['longitude']}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,wind_speed_10m&daily=uv_index_max&timezone=auto"
+            w_res = requests.get(weather_url).json()
             
-            # Format display
+            current = w_res["current"]
+            uv_index = w_res["daily"]["uv_index_max"][0]
+            
             self.query_one("#weather-display").update(
                 f"""
                 <div class="weather-box">
-                    [bold white]{full_name}[/bold white]
+                    [bold white]{res['name']}[/bold white]
                     <br/>
-                    <span class="stat-label">Temperature:</span> [bold yellow]{w_res['temperature']}°C[/bold yellow]
+                    <span class="stat-label">Temperature:</span> [bold yellow]{current['temperature_2m']}°C[/bold yellow] | [dim]Feels like: {current['apparent_temperature']}°C[/dim]
                     <br/>
-                    <span class="stat-label">Wind Speed:</span> [bold white]{w_res['windspeed']} km/h[/bold white]
+                    <span class="stat-label">Humidity:</span> [bold white]{current['relative_humidity_2m']}%[/bold white] | [bold white]Wind: {current['wind_speed_10m']} km/h[/bold white]
+                    <br/>
+                    <span class="stat-label">UV Index:</span> [bold magenta]{uv_index}[/bold magenta] | [dim]Precip: {current['precipitation']}mm[/dim]
                 </div>
                 """
             )
 
-            # Save to CSV
             with open("weather_history.csv", mode='a', newline='') as file:
-                csv.writer(file).writerow([datetime.now().strftime("%Y-%m-%d %H:%M"), full_name, w_res['temperature']])
+                csv.writer(file).writerow([datetime.now().strftime("%Y-%m-%d %H:%M"), res['name'], current['temperature_2m']])
 
             self.update_history_table()
-            self.update_forecast_table(lat, lon, full_name)
+            self.update_forecast_table(res['latitude'], res['longitude'], res['name'])
 
         except Exception as e:
             self.query_one("#weather-display").update(f"[red]Error: {str(e)}[/red]")
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "add-fav":
+            if hasattr(self, 'current_city_data'):
+                data = self.current_city_data
+                save_favorite(data['name'], data['lat'], data['lon'])
+                self.update_favorites_table()
+                self.notify(f"Added {data['name']} to favorites!")
+
+    def update_favorites_table(self):
+        table = self.query_one("#fav-table", DataTable)
+        table.clear()
+        table.add_columns("City")
+        favs = get_all_favorites()
+        for city in favs:
+            table.add_row(city)
 
     def update_history_table(self):
         table = self.query_one("#history-table", DataTable)
