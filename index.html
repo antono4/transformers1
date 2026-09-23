@@ -6,7 +6,6 @@
     <title>Antono4 | Fullstack Architect</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
-        /* Quick professional overrides to match the Pro theme */
         :root {
             --primary: #3b82f6;
             --dark: #0f172a;
@@ -14,87 +13,138 @@
             --accent: #60a5fa;
             --text: #334155;
         }
-        body { background-color: var(--light); color: var(--text); }
-        .hero-content h1 { font-size: 3rem; font-weight: 800; letter-spacing: -1px; }
+        body { 
+            background-color: var(--light); 
+            color: var(--text); 
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            transition: all 0.5s ease;
+        }
+        .hero-content { 
+            text-align: center; 
+            padding: 120px 20px; 
+            background: radial-gradient(circle at top, #e2e8f0 0%, #f8fafc 100%);
+        }
+        .hero-content h1 { 
+            font-size: 3.5rem; 
+            font-weight: 800; 
+            letter-spacing: -2px; 
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+        .highlight { color: var(--primary); }
         .btn-pro { 
             display: inline-block; 
             background: var(--primary); 
             color: white; 
-            padding: 1rem 2rem; 
+            padding: 1.2rem 2.5rem; 
             border-radius: 50px; 
             text-decoration: none; 
             font-weight: bold; 
             transition: all 0.3s;
             box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+            font-size: 1.1rem;
         }
-        .btn-pro:hover { transform: translateY(-3px); box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.4); }
-        .tech-stack { display: flex; gap: 10px; justify-content: center; margin-top: 2rem; }
-        .tech-badge { padding: 5px 12px; background: #e2e8f0; border-radius: 15px; font-size: 12px; font-weight: 600; color: #64748b; }
+        .btn-pro:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.4); 
+            background: #2563eb;
+        }
+        .tech-stack { 
+            display: flex; 
+            gap: 12px; 
+            justify-content: center; 
+            margin-top: 3rem; 
+            flex-wrap: wrap;
+        }
+        .tech-badge { 
+            padding: 6px 16px; 
+            background: white; 
+            border: 1px solid #e2e8f0;
+            border-radius: 20px; 
+            font-size: 13px; 
+            font-weight: 600; 
+            color: #64748b; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .manifesto-section {
+            background: var(--dark);
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+        }
+        .manifesto-text {
+            font-style: italic;
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
     <header>
-        <nav>
-            <div class="logo">Antono4</div>
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
+        <nav style="display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: white; border-bottom: 1px solid #e2e8f0;">
+            <div class="logo" style="font-weight: 800; font-size: 1.2rem; color: var(--dark);">Antono4</div>
+            <ul style="display: flex; list-style: none; gap: 30px; margin: 0; padding: 0; font-size: 14px; font-weight: 600; color: #64748b;">
+                <li><a href="#about" style="text-decoration: none; color: inherit;">About</a></li>
+                <li><a href="#projects" style="text-decoration: none; color: inherit;">Projects</a></li>
+                <li><a href="#contact" style="text-decoration: none; color: inherit;">Contact</a></li>
             </ul>
         </nav>
     </header>
 
-    <section id="hero">
-        <div class="hero-content" style="text-align: center; padding: 100px 20px;">
+    <section id="hero" class="hero-content">
+        <div class="hero-content">
             <h1>Fullstack <span class="highlight">Architect</span></h1>
-            <p>Engineering high-performance systems and cinema-grade digital experiences.</p>
-            <div style="margin-top: 30px;">
-                <a href="https://antono4.github.io/transformers1/" class="btn-pro">Visit Professional Portfolio →</a>
-            </div>
+            <p style="font-size: 1.2rem; color: #64748b; margin-bottom: 2rem;">Engineering high-performance systems and cinema-grade digital experiences.</p>
+            <a href="https://antono4.github.io/transformers1/" class="btn-pro">Experience the Pro Portfolio →</a>
+            
             <div class="tech-stack">
                 <span class="tech-badge">Next.js</span>
                 <span class="tech-badge">Tailwind CSS</span>
                 <span class="tech-badge">Python</span>
                 <span class="tech-badge">PostgreSQL</span>
                 <span class="tech-badge">Docker</span>
+                <span class="tech-badge">Redis</span>
+                <span class="tech-badge">Gemini AI</span>
             </div>
         </div>
     </section>
 
-    <section id="about" style="text-align: center; padding: 80px 20px;">
-        <h2>The Philosophy</h2>
-        <p style="max-width: 700px; margin: 0 auto; font-style: italic;">
-            "I believe that software is not a collection of features, but a symphony of systems. 
-            I build for speed, design for trust, and architect for scale."
-        </p>
+    <section class="manifesto-section">
+        <div class="manifesto-text">
+            "I believe that software is not a collection of features, but a symphony of systems. I build for speed, design for trust, and architect for scale."
+        </div>
     </section>
 
-    <section id="projects" style="text-align: center; padding: 80px 20px;">
-        <h2>Core Capabilities</h2>
-        <div class="project-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto;">
-            <div class="project-card" style="padding: 20px; background: white; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                <h3>Enterprise Web</h3>
-                <p>High-performance Next.js apps with seamless UX.</p>
+    <section id="projects" style="text-align: center; padding: 100px 20px;">
+        <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 3rem; color: var(--dark);">Core Capabilities</h2>
+        <div class="project-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1100px; margin: 0 auto;">
+            <div class="project-card" style="padding: 40px; background: white; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; text-align: left;">
+                <h3 style="color: var(--primary); font-size: 1.5rem; margin-bottom: 1rem;">Enterprise Web</h3>
+                <p style="color: #64748b; line-height: 1.6;">High-performance Next.js applications featuring cinema-grade animations and scalable architecture.</p>
             </div>
-            <div class="project-card" style="padding: 20px; background: white; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                <h3>AI Automation</h3>
-                <p>Custom AI pipelines and intelligent system tools.</p>
+            <div class="project-card" style="padding: 40px; background: white; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; text-align: left;">
+                <h3 style="color: var(--primary); font-size: 1.5rem; margin-bottom: 1rem;">AI Automation</h3>
+                <p style="color: #64748b; line-height: 1.6;">Custom AI pipelines integrating LLMs and Computer Vision for automated content creation.</p>
             </div>
-            <div class="project-card" style="padding: 20px; background: white; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                <h3>Systems Design l</h3>
-                <p>Dockerized, scalable backends with PostgreSQL.</p>
+            <div class="project-card" style="padding: 40px; background: white; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; text-align: left;">
+                <h3 style="color: var(--primary); font-size: 1.5rem; margin-bottom: 1rem;">Systems Design</h3>
+                <p style="color: #64748b; line-height: 1.6;">Cloud-native backends using Docker, Redis queues, and PostgreSQL for maximum reliability.</p>
             </div>
         </div>
     </section>
 
-    <section id="contact" style="text-align: center; padding: 80px 20px;">
-        <h2>Get In Touch</h2>
-        <p>Ready to build something exceptional?</p>
-        <a href="mailto:your-email@example.com" class="btn-pro" style="margin-top: 20px;">Send a Message</a>
+    <section id="contact" style="text-align: center; padding: 100px 20px; background: #f1f5f9;">
+        <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; color: var(--dark);">Ready to Build?</h2>
+        <p style="color: #64748b; margin-bottom: 2rem;">Let's turn your vision into a high-performance reality.</p>
+        <a href="mailto:your-email@example.com" class="btn-pro">Contact Me</a>
     </section>
 
-    <footer>
-        <p>&copy; 2026 Antono4. Architected with Precision.</p>
+    <footer style="text-align: center; padding: 40px 20px; font-size: 14px; color: #94a3b8; border-top: 1px solid #e2e8f0;">
+        <p>&copy; 2026 Antono4. Architected with Precision. All rights reserved.</p>
     </footer>
 
     <script src="js/main.js"></script>
